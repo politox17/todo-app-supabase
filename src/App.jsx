@@ -1,51 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function showList() {
+function ShowList() {
   return (
     <table>
-      <tr>
-        <th>Nome task</th>
-        <th>Da svolgere entro</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>Numero</th>
+          <th>Task</th>
+        </tr>
+      </thead>
+      <tbody>
+        {/* Qui inserirai i task */}
+      </tbody>
     </table>
   )
 }
 
+function AddTask() {
 
- function MyButton({onClick, children}) {
-  return(
-    <>
-        <button onClick={onClick}>{children}</button>
-        
-    </>
-  )
 }
 
-function Toolbar({onShowTask}) {
+function MyButton({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>
+}
+
+function Toolbar({ onShowTask, onAdd }) {
   return (
-    <>
-       <MyButton onClick={onShowTask}>Visualizza</MyButton>
-       <MyButton>Elimina</MyButton>
-       <MyButton>Modifica</MyButton>
-       <MyButton>Aggiungi</MyButton>
-    </>
+    <div>
+      <MyButton onClick={onShowTask}>Visualizza</MyButton>
+      <MyButton>Elimina</MyButton>
+      <MyButton>Modifica</MyButton>
+      <MyButton onClick={onAdd}>Aggiungi</MyButton>
+    </div>
   )
 }
 
 export default function App() {
- 
+  const [isListVisible, setIsListVisible] = useState(false) // App tiene uno stato
 
   return (
     <>
       <h1>Benvenuto!</h1>
       <h3>Scegli cosa fare</h3>
-      <Toolbar onShowTask={() => showList()} />
-      
+      <Toolbar onShowTask={() => setIsListVisible(true)} /> {/* Lo setta su true */}
+      {isListVisible && <ShowList />} {/* se è true lo reinderizza */}
     </>
   )
 }
-
-
