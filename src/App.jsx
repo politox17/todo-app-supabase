@@ -21,29 +21,41 @@ function ShowList({ tasks }) {
     </table>
   )
 }
-function EditTask({onEdit}) {
+function EditTask({ onEdit }) {
   const [inputToEdit, setInputEdit] = useState('')
+  const [newText, setNewText] = useState('')
 
   const handleSubmit = (e) => {
-   e.preventDefault();
-   if (inputToEdit.trim() !== '') {
-    onEdit(Number(inputToEdit) - 1) // uso -1 perché l'indice parte da 0, cmq fa pasring dell'input
-    setInputEdit('')
+    e.preventDefault()
+    if (inputToEdit.trim() !== '' && newText.trim() !== '') {
+      onEdit(Number(inputToEdit) - 1, newText)
+      setInputEdit('')
+      setNewText('')
     }
   }
+
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="task">Inserisci ID task da modificare: </label>
+      <label htmlFor="taskId">ID task da modificare: </label>
       <input
-        id="task"
+        id="taskId"
         type="number"
         value={inputToEdit}
         onChange={(e) => setInputEdit(e.target.value)}
+      />
+      <br />
+      <label htmlFor="newTask">Nuovo testo: </label>
+      <input
+        id="newTask"
+        type="text"
+        value={newText}
+        onChange={(e) => setNewText(e.target.value)}
       />
       <button type="submit">Modifica</button>
     </form>
   )
 }
+
 
 function DeleteTask({ onDel }) {
   const [inputToDel, setInputToDel] = useState('')
@@ -124,10 +136,13 @@ export default function App() {
     setCurrentView('list')
   }
 
-  const handleEditTask = (indexToEdit) => {
-    setTasks(tasks.filter((_, i) => i !== indexToEdit))
+  const handleEditTask = (indexToEdit, newText) => {
+    setTasks(
+      tasks.map((task, i) => (i === indexToEdit ? newText : task))
+    )
     setCurrentView('list')
   }
+  
 
   return (
     <>
