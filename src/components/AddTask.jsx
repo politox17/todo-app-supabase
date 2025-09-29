@@ -18,6 +18,7 @@ export default function AddTask({onAdd})
         <input type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)} />
+        <button type='submit'>Aggiungi</button>
     </form>
    )
 }
