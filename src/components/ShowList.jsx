@@ -1,6 +1,5 @@
-
-
 export default function ShowList({tasks}) {
+  
    return(
     <table>
         <thead>
