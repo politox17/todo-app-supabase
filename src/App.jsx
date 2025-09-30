@@ -1,69 +1,87 @@
-import { useEffect, useState } from "react";
-import { supabase } from "./services/supabaseConnect";
+import { useState, useEffect } from "react";
+import { supabase } from "./supabaseConnect";
+import Toolbar from "./components/Toolbar";
 import ShowList from "./components/ShowList";
 import AddTask from "./components/AddTask";
 import DeleteTask from "./components/DeleteTask";
-import Toolbar from "./components/Toolbar";
-import MyButton from "./components/MyButton";
-
 
 export default function App() {
-  const [tasks, setTask] = useState([])
-  const [currentView, setCurrentView] = useState('')
-  const { data: { user } } = await supabase.auth.getUser()
+  const [tasks, setTasks] = useState([]);
+  const [currentView, setCurrentView] = useState("");
+  const [user, setUser] = useState(null);
 
-
-
-  // Caricare task dal DB
+  // Recupera utente loggato
   useEffect(() => {
+    async function fetchUser() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Errore utente -- ", error);
+      } else {
+        setUser(data.user);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // Caricare task dal DB per l'utente loggato
+  useEffect(() => {
+    if (!user) return;
     async function fetchTasks() {
-      const {data, error} = await supabase.from("Tasks").select("*").eq('user_id', user.id);
+      const { data, error } = await supabase
+        .from("Tasks")
+        .select("*")
+        .eq("user_id", user.id);
       if (error) {
         console.error("Errore nella connessione -- ", error);
       } else {
-        setTask(data.map((t) => t.content));
+        setTasks(data);
       }
     }
     fetchTasks();
-  }, []);
+  }, [user]);
 
   // Aggiungere task
   const handleAddTask = async (task) => {
-    const { error } = await supabase.from("Tasks").insert([{ content: task }]); // Aggiunge testo
-    if (!error) {
-      setTask((prev) => [...prev, task]);
+    if (!user) return;
+    const { data, error } = await supabase
+      .from("Tasks")
+      .insert([{ content: task, user_id: user.id }])
+      .select();
+    if (!error && data) {
+      setTasks((prev) => [...prev, ...data]);
       setCurrentView("list");
     } else {
       console.error("Errore inserimento -- ", error);
     }
   };
 
-  const handleDeleteTask = async (indexToRemove) => {
-    const taskToDelete = tasks[indexToRemove];
-    const { error } = await supabase.from("Tasks").delete().eq("content", taskToDelete);
+  // Eliminare task per id
+  const handleDeleteTask = async (taskId) => {
+    const { error } = await supabase.from("Tasks").delete().eq("id", taskId);
     if (!error) {
-      setTask(tasks.filter((_, i) => i !== indexToRemove));
+      setTasks(tasks.filter((t) => t.id !== taskId));
       setCurrentView("list");
     } else {
       console.error("Errore eliminazione -- ", error);
     }
-
   };
 
-  return(
+  return (
     <>
-    <h1>Benvenuto</h1>
-    <h3>Scegli cosa fare.</h3>
+      <h1>Benvenuto</h1>
+      <h3>Scegli cosa fare.</h3>
 
-    <Toolbar 
-    onShow={() => setCurrentView("list")}
-    onAdd={() => setCurrentView("add")}
-    onDelete={() => setCurrentView("delete")}
-    />
+      <Toolbar
+        onShow={() => setCurrentView("list")}
+        onAdd={() => setCurrentView("add")}
+        onDelete={() => setCurrentView("delete")}
+      />
 
       {currentView === "list" && <ShowList tasks={tasks} />}
       {currentView === "add" && <AddTask onAdd={handleAddTask} />}
-      {currentView === "delete" && <DeleteTask onDel={handleDeleteTask} />}
+      {currentView === "delete" && (
+        <DeleteTask onDel={handleDeleteTask} tasks={tasks} />
+      )}
     </>
-  )
+  );
 }
