@@ -1,5 +1,3 @@
-
-
-export default function MyButton({onClick, child}) {
-    return <button onClick={onClick}>{child}</button>
+export default function MyButton({onClick, children}) {
+    return <button onClick={onClick}>{children}</button>
 }

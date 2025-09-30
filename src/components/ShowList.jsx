@@ -4,15 +4,15 @@ export default function ShowList({tasks}) {
     <table>
         <thead>
             <tr>
-                <th>Numero</th>
+                <th>ID</th>
                 <th>Task</th>
             </tr>
         </thead>
         <tbody>
-        {tasks.map((task, index) => (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{task}</td>
+        {tasks.map((task) => (
+          <tr key={task.id}>
+            <td>{task.id}</td>
+            <td>{task.content}</td>
           </tr>
         ))}
         </tbody>

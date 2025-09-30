@@ -1,35 +1,46 @@
 import { useState, useEffect } from "react";
-import { supabase } from "./supabaseConnect";
+import { supabase } from "./services/supabaseConnect";
 import Toolbar from "./components/Toolbar";
 import ShowList from "./components/ShowList";
 import AddTask from "./components/AddTask";
 import DeleteTask from "./components/DeleteTask";
+import Login from "./components/Login";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [currentView, setCurrentView] = useState("");
   const [user, setUser] = useState(null);
 
-  // Recupera utente loggato
+  // Recupera utente loggato e gestisce auth state changes
   useEffect(() => {
     async function fetchUser() {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error("Errore utente -- ", error);
-      } else {
-        setUser(data.user);
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
     }
+    
     fetchUser();
+
+    // Listener per cambiamenti di autenticazione
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // Caricare task dal DB per l'utente loggato
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setTasks([]);
+      return;
+    }
+    
     async function fetchTasks() {
       const { data, error } = await supabase
         .from("Tasks")
-        .select("*")
+        .select("id, content, user_id")
         .eq("user_id", user.id);
       if (error) {
         console.error("Errore nella connessione -- ", error);
@@ -66,21 +77,44 @@ export default function App() {
     }
   };
 
+  // Gestione login successful
+  const handleLoginSuccess = () => {
+    setCurrentView("list");
+  };
+
+  // Logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setCurrentView("");
+  };
+
   return (
     <>
       <h1>Benvenuto</h1>
-      <h3>Scegli cosa fare.</h3>
-
-      <Toolbar
-        onShow={() => setCurrentView("list")}
-        onAdd={() => setCurrentView("add")}
-        onDelete={() => setCurrentView("delete")}
-      />
-
-      {currentView === "list" && <ShowList tasks={tasks} />}
-      {currentView === "add" && <AddTask onAdd={handleAddTask} />}
-      {currentView === "delete" && (
-        <DeleteTask onDel={handleDeleteTask} tasks={tasks} />
+      
+      {user ? (
+        <>
+          <h2>Ciao, {user.email}!</h2>
+          <button onClick={handleLogout}>Logout</button>
+          <Toolbar
+            onShow={() => setCurrentView("list")}
+            onAdd={() => setCurrentView("add")}
+            onDelete={() => setCurrentView("delete")}
+          />
+          
+          {currentView === "list" && <ShowList tasks={tasks} />}
+          {currentView === "add" && <AddTask onAdd={handleAddTask} />}
+          {currentView === "delete" && (
+            <DeleteTask onDel={handleDeleteTask} tasks={tasks} />
+          )}
+        </>
+      ) : (
+        <>
+          <h2>Prima di svolgere operazioni devi autenticarti</h2>
+          <Toolbar onLog={() => setCurrentView("login")} />
+          
+          {currentView === "login" && <Login onLoginSuccess={handleLoginSuccess} />}
+        </>
       )}
     </>
   );

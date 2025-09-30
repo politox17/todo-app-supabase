@@ -6,10 +6,10 @@ export default function DeleteTask({onDel})
 
    const handleSubmit = async (e) => {
     e.preventDefault();
-    const index = Number(inputValue) - 1;
-    if (isNaN(index) || index < 0) return;
+    const id = Number(inputValue);
+    if (isNaN(id) || id <= 0) return;
 
-    await onDel(index);
+    await onDel(id);
     setInputValue('');
    }
 
