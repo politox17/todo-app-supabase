@@ -54,14 +54,7 @@ export default function Login({ onLoginSuccess }) {
         <button 
           onClick={handleGoogleLogin} 
           disabled={loading}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#4285f4',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="google-button"
         >
           {loading ? 'Caricamento...' : 'Accedi con Google'}
         </button>
