@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+html, body {
+  min-height: 100%;
+  background: #83a4d4;
+  background: linear-gradient(to left, #b6fbff, #83a4d4);
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -18,15 +24,6 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.container {
-  height: 100vh;
-  padding: 20px;
-
-  background: #83a4d4;
-  background: linear-gradient(to left, #b6fbff, #83a4d4);
-
-  color: #171212;
-}
 
 @keyframes logo-spin {
   from {
@@ -53,21 +50,25 @@
 
 /* Stili per l'applicazione todo */
 .title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
-  color: #2c3e50;
+  color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-  padding-bottom: 20px;
+  padding-bottom: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .subtitle {
-  font-size: 1.5rem;
-  padding-bottom: 25px;
+  font-size: 2.5rem;
+  padding-bottom: 15px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  color: #ffffff;
+
 }
 
 .button-logout {
-  padding: 10px 20px;
+  padding: 10px 15px;
 }
 
 .subtitle-user {
@@ -86,7 +87,7 @@
 
 /* Button base - stile generale per tutti i button */
 button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #664be1 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -165,4 +166,74 @@ button[type="submit"]:hover {
   background: linear-gradient(135deg, #3367d6 0%, #4285f4 100%);
   box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
 }
+
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.login-form h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+  color: #2c3e50;
+}
+
+.login-form hr {
+  margin: 12px 0 16px 0;
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.login-form .login-email-item,
+.login-form .login-password-item {
+  margin-bottom: 14px;
+}
+
+.login-form button[type="submit"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+
 

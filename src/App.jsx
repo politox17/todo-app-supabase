@@ -90,6 +90,17 @@ export default function App() {
     setCurrentView("");
   };
 
+  // Vista esclusiva: se non sei loggato e hai richiesto "login",
+  // rendi SOLO il form di login e nient'altro
+  if (!user && currentView === "login") {
+    return (
+      <div className="container">
+        <h1 className="title">Benvenuto</h1>
+        <Login onLoginSuccess={handleLoginSuccess} />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
      <h1 className="title">Benvenuto</h1>

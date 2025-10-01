@@ -46,7 +46,7 @@ export default function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h3>Accedi alla tua applicazione</h3>
       
       {/* Login con Google */}
@@ -63,8 +63,8 @@ export default function Login({ onLoginSuccess }) {
       <hr />
       
       {/* Login con email/password */}
-      <form onSubmit={handleEmailLogin}>
-        <div>
+      <form  className="login-form"onSubmit={handleEmailLogin}>
+        <div className="login-email-item">
           <label htmlFor="email">Inserisci email</label>
           <input 
             type="email"
@@ -75,7 +75,7 @@ export default function Login({ onLoginSuccess }) {
           />
         </div>
         
-        <div>
+        <div className='login-password-item'>
           <label htmlFor="password">Inserisci password</label>
           <input 
             type="password"
