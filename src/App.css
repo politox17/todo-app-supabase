@@ -18,7 +18,7 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-container {
+.container {
   height: 100vh;
   padding: 20px;
 
@@ -50,3 +50,35 @@ container {
 .read-the-docs {
   color: #888;
 }
+
+/* Stili per l'applicazione todo */
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  padding-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  padding-bottom: 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.button-logout {
+  padding: 10px 20px;
+}
+
+.subtitle-user {
+  place-items: center;
+  background: linear-gradient(90deg, #00f,#0ff, #00f) -100%/ 200%;
+  color: transparent;
+	font: 900 clamp(1.2em, 4vw, 2.5em) exo, sans-serif;
+  -webkit-background-clip: text;
+	        background-clip: text;
+	animation: shimmer 2s linear infinite
+}
+
+@keyframes shimmer { to { background-position: 100% } }
+

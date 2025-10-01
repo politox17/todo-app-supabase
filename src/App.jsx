@@ -5,6 +5,7 @@ import ShowList from "./components/ShowList";
 import AddTask from "./components/AddTask";
 import DeleteTask from "./components/DeleteTask";
 import Login from "./components/Login";
+import "./App.css";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
@@ -95,10 +96,9 @@ export default function App() {
       
       {user ? (
         <>
-          <h2 classname="subtitle">Ciao, {user.email}!</h2>
-          <button className="button" onClick={handleLogout}>Logout</button>
+          <h2 className="subtitle-user">Ciao, {user.email}!</h2>
+          <button className="button-logout" onClick={handleLogout}>Logout</button>
           <Toolbar
-            className="toolbar"
             onShow={() => setCurrentView("list")}
             onAdd={() => setCurrentView("add")}
             onDelete={() => setCurrentView("delete")}
@@ -112,8 +112,8 @@ export default function App() {
         </>
       ) : (
         <>
-          <h2 className="subtitle_login">Prima di svolgere operazioni devi autenticarti</h2>
-          <Toolbar className="toolbar_login" onLog={() => setCurrentView("login")} />
+          <h2 className="subtitle">Prima di svolgere operazioni devi autenticarti</h2>
+          <Toolbar onLog={() => setCurrentView("login")} />
           
           {currentView === "login" && <Login onLoginSuccess={handleLoginSuccess} />}
         </>
