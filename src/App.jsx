@@ -53,6 +53,7 @@ export default function App() {
 
   // Aggiungere task
   const handleAddTask = async (task) => {
+
     if (!user) return;
     const { data, error } = await supabase
       .from("Tasks")
@@ -89,14 +90,15 @@ export default function App() {
   };
 
   return (
-    <>
-      <h1>Benvenuto</h1>
+    <div className="container">
+     <h1 className="title">Benvenuto</h1>
       
       {user ? (
         <>
-          <h2>Ciao, {user.email}!</h2>
-          <button onClick={handleLogout}>Logout</button>
+          <h2 classname="subtitle">Ciao, {user.email}!</h2>
+          <button className="button" onClick={handleLogout}>Logout</button>
           <Toolbar
+            className="toolbar"
             onShow={() => setCurrentView("list")}
             onAdd={() => setCurrentView("add")}
             onDelete={() => setCurrentView("delete")}
@@ -110,12 +112,12 @@ export default function App() {
         </>
       ) : (
         <>
-          <h2>Prima di svolgere operazioni devi autenticarti</h2>
-          <Toolbar onLog={() => setCurrentView("login")} />
+          <h2 className="subtitle_login">Prima di svolgere operazioni devi autenticarti</h2>
+          <Toolbar className="toolbar_login" onLog={() => setCurrentView("login")} />
           
           {currentView === "login" && <Login onLoginSuccess={handleLoginSuccess} />}
         </>
       )}
-    </>
+    </div>
   );
 }
